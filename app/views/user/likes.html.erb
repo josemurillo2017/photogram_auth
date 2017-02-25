@@ -1,0 +1,6 @@
+
+<h1> <%= @current_user.username %> </h1>
+<% @liked_photos.each do |photo| %>
+<img src="<%= photo.username %>">
+<p> <%= photo.caption %> </p>
+<% end %>

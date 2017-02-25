@@ -9,4 +9,8 @@ class UsersController < ApplicationController
     @photos_of_searched_user = @searched_user.photos.all
     render("user/show.html.erb")
   end
+  def likes
+    @liked_photos= current_user.liked_photos.all
+    render("user/likes.html.erb")
+  end
 end
