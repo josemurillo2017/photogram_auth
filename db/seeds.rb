@@ -10,7 +10,7 @@ end
 
 puts "There are now #{User.count} users in the database."
 
-photo_info = [
+photo_infos = [
   {
     :image => "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Lake_Bondhus_Norway_2862.jpg/1280px-Lake_Bondhus_Norway_2862.jpg",
     :caption => "Lake Bondhus"
@@ -44,7 +44,11 @@ photo_info = [
 users = User.all
 
 users.each do |user|
-  user.photos.create photo_info
+  photo_infos.each do |photo_info|
+    photo = Photo.new(photo_info)
+    photo.user_id = user.id
+    photo.save
+  end
 end
 
 puts "There are now #{Photo.count} photos in the database."
@@ -53,8 +57,9 @@ photos = Photo.all
 
 photos.each do |photo|
   rand(6).times do
-    comment = photo.comments.build
-    comment.user = users.sample
+    comment = Comment.new
+    comment.photo_id = photo.id
+    comment.user_id = users.sample.id
     comment.body = Faker::Hacker.say_something_smart
     comment.save
   end
@@ -64,8 +69,9 @@ puts "There are now #{Comment.count} comments in the database."
 
 photos.each do |photo|
   users.sample(rand(users.count)).each do |user|
-    like = photo.likes.build
-    like.user = user
+    like = Like.new
+    like.photo_id = photo.id
+    like.user_id = user.id
     like.save
   end
 end
