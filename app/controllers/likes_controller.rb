@@ -26,42 +26,36 @@ class LikesController < ApplicationController
     save_status = @like.save
 
     if save_status == true
-      redirect_to("/likes/#{@like.id}", :notice => "Like created successfully.")
-    else
-      render("likes/new.html.erb")
+      redirect_to("/photos", :notice => "Like created successfully.")
     end
-  end
 
-  def edit
-    @like = Like.find(params[:id])
+    def edit
+      @like = Like.find(params[:id])
 
-    render("likes/edit.html.erb")
-  end
-
-  def update
-    @like = Like.find(params[:id])
-
-    @like.user_id = params[:user_id]
-    @like.photo_id = params[:photo_id]
-
-    save_status = @like.save
-
-    if save_status == true
-      redirect_to("/likes/#{@like.id}", :notice => "Like updated successfully.")
-    else
       render("likes/edit.html.erb")
     end
-  end
 
-  def destroy
-    @like = Like.find(params[:id])
+    def update
+      @like = Like.find(params[:id])
 
-    @like.destroy
+      @like.user_id = params[:user_id]
+      @like.photo_id = params[:photo_id]
 
-    if URI(request.referer).path == "/likes/#{@like.id}"
-      redirect_to("/", :notice => "Like deleted.")
-    else
-      redirect_to(:back, :notice => "Like deleted.")
+      save_status = @like.save
+
+      if save_status == true
+        redirect_to("/likes/#{@like.id}", :notice => "Like updated successfully.")
+      else
+        render("likes/edit.html.erb")
+      end
+    end
+
+    def destroy
+      @like_val = Like.find(params[:id])
+
+      @like_val.destroy
+
+      redirect_to("/photos")
     end
   end
 end
